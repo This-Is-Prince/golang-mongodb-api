@@ -73,13 +73,14 @@ func init() {
 
 	// Collections
 	authCollection = mongoClient.Database("golang_mongodb").Collection("users")
-	userService = services.NewUserServiceImpl(authCollection, ctx)
+
+	userService = services.NewUserService(authCollection, ctx)
+	UserController = controllers.NewUserController(userService)
+	UserRouteController = routes.NewUserRouteController(UserController)
+
 	authService = services.NewAuthService(authCollection, ctx)
 	AuthController = controllers.NewAuthController(authService, userService)
 	AuthRouteController = routes.NewAuthRouteController(AuthController)
-
-	UserController = controllers.NewUserController(userService)
-	UserRouteController = routes.NewUserRouteController(UserController)
 
 	// Gin Engine instance
 	server = gin.Default()
